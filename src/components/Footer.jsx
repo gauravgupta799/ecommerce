@@ -1,6 +1,9 @@
 import React from 'react'
 import styled from "styled-components";
-import {FacebookFilled, InstagramFilled,TwitterCircleFilled } from "@ant-design/icons";
+import {
+    FacebookFilled, InstagramFilled,TwitterCircleFilled,
+    MailOutlined,PhoneOutlined,FileAddOutlined
+} from "@ant-design/icons";
 
 const Container = styled.div`
  height:200px;
@@ -43,6 +46,7 @@ const SocialIcon = styled.div`
 const Center = styled.div`
   flex:1;
   padding:20px;
+  margin-top:30px;
 `
 const Title = styled.h3`
  margin-bottom:30px;
@@ -69,8 +73,10 @@ const ListItem = styled.li`
 const Right = styled.div`
  flex:1;
 `
+const ContactItem = styled.div`
+ margin-bottom:15px`;
 
-const ContactItem = styled.li``
+const Payment = styled.img``
 
 const Footer = () => {
   return (
@@ -89,7 +95,7 @@ const Footer = () => {
           </ScocialContainer>
        </Left>
        <Center>
-        <Title>Useful Links</Title>
+        <Title margin= "30px">Useful Links</Title>
         <List>
             <ListItem>Home</ListItem>
             <ListItem>Cart</ListItem>
@@ -104,9 +110,10 @@ const Footer = () => {
        </Center>
        <Right>
          <Title>Contact</Title>
-         <ContactItem>234 Sarojini Raod, North East Delhi 232343 </ContactItem>
-         <ContactItem>+1 912 833 233</ContactItem>
-         <ContactItem>abc@gmail.com</ContactItem>
+         <ContactItem><FileAddOutlined style={{marginRight:"10px"}}/>234 Sarojini Raod, North East Delhi 232343 </ContactItem>
+         <ContactItem><PhoneOutlined style={{marginRight:"10px"}}/>+1 912 833 233</ContactItem>
+         <ContactItem><MailOutlined style={{marginRight:"10px"}}/>abc@gmail.com</ContactItem>
+         <Payment src="https://i.ibb.co/Qfvn4z6/payment.png" />
        </Right>
     </Container>
   )
