@@ -31,7 +31,7 @@ const SearchContainer = styled.div`
 
 const Input = styled.input`
 	border: none;
-	/* outline:none; */
+	outline:none;
 	padding: 10px 10px;
 	font-size: 14px;
 `;
