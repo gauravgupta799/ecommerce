@@ -71,7 +71,6 @@ const Categories = () => {
                     <Option disabled selected>Newest</Option>
                     <Option>Price(Ascending)</Option>
                     <Option>Price(Descending)</Option>
-
                 </Select>
             </Filter>
           </FilterContainer>
