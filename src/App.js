@@ -2,8 +2,8 @@
 // import Home from "./pages/Home"
 // import Categories from "./pages/Categories";
 // import Product from "./pages/Product";
-// import Register from "./pages/Register";
-import Cart from "./pages/Cart";
+import Register from "./pages/Register";
+// import Cart from "./pages/Cart";
 // import Login from "./pages/Login";
 
 function App() {
@@ -12,9 +12,9 @@ function App() {
       {/* <Home/> */}
       {/* <Categories/> */}
       {/* <Product/> */}
-      {/* <Register/> */}
+      <Register/>
       {/* <Login/> */}
-      <Cart/>
+      {/* <Cart/> */}
 
     </div>
   );

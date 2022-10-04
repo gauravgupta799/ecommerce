@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from "styled-components";
 import { SendOutlined} from "@ant-design/icons";
+import {mobile} from "../responsive";
 
 const Container = styled.div`
   height:50vh;
@@ -9,17 +10,25 @@ const Container = styled.div`
   justify-content:center;
   flex-direction:column;
   background-color:#fcf5f5;
-
+  line-height:1.4;
 `
 const Title = styled.h1`
   font-size:70px;
   letter-spacing: 1px;
+  ${mobile({
+    fontSize:"45px",
+    textAlign:"center"
+  })}
 `
 const Desc = styled.p`
  font-size:24px;
  font-weight: 300;
  margin-bottom:20px;
  letter-spacing: 1px;
+ ${mobile({
+    fontSize:"20px",
+    textAlign:"center",
+  })}
 `
 const InputContainer = styled.div`
   width:50%;
@@ -28,6 +37,10 @@ const InputContainer = styled.div`
   display:flex;
   justify-content: space-between;
   border-radius:4px;
+  ${mobile({
+    width:"85%",
+    height:"35px"
+  })}
 
 `
 const Input = styled.input`

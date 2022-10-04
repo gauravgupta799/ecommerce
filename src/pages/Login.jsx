@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from "styled-components";
-// import {  } from "@ant-design/icons";
+import {mobile} from "../responsive";
 
 const Container = styled.div`
  width:100vw;
@@ -22,6 +22,7 @@ const Wrapper = styled.div`
    padding:30px 30px 10px;
    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
    border-radius: 4px;
+   ${mobile({width:"70%"})}
 `
 const Title = styled.h1`
  font-size: 30px;
@@ -62,13 +63,16 @@ const Button = styled.button`
 const BottomContainer = styled.div`
  display:flex;
  justify-content: space-between;
+ align-items: center;
  margin-top:30px;
- padding:8px 0px;
+ padding:8px 10px;
  width:100%;
- 
 `
 const Span = styled.span`
   font-weight: 500;
+  ${mobile({fontSize:"14px",
+   lineHeight:"1.5"
+  })}
 `
 const Link = styled.a`
   font-weight: 600;
@@ -90,12 +94,12 @@ const Login = () => {
 					<Input type='email' placeholder='Email' />
 					<Input type='password' placeholder='Password' />
 					<Button>LOGIN</Button>
-                    <BottomContainer>
-                      <Span>New user? <Link>Sign Up</Link></Span>
-                      <Span>Forgot password? <Link>Click here.</Link></Span>
-                    </BottomContainer>
+          <BottomContainer>
+            <Span>New user? <Link>Sign Up</Link></Span>
+            <Span>Forgot password? <Link>Click here.</Link></Span>
+          </BottomContainer>
 				</Form>
-			</Wrapper>
+		  	</Wrapper>
             
         </Container>
     )

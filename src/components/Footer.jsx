@@ -4,6 +4,7 @@ import {
     FacebookFilled, InstagramFilled,TwitterCircleFilled,
     MailOutlined,PhoneOutlined,FileAddOutlined
 } from "@ant-design/icons";
+import {mobile} from "../responsive";
 
 const Container = styled.div`
  height:200px;
@@ -11,15 +12,18 @@ const Container = styled.div`
  align-items: center;
  justify-content:space-between;
  padding: 0px 20px;
- /* border:1px solid black; */
+ ${mobile({flexDirection:"column"})}
 `
 const Left = styled.div`
  flex:1;
  display:flex;
  flex-direction: column;
  padding: 10px;
+ ${mobile({padding:"0px"})}
 `
-const Logo = styled.h1``
+const Logo = styled.h1`
+   ${mobile({fontSize:"24px",marginTop:"10px"})}
+`
 const Desc = styled.p`
   margin:20px 0px;
 `
@@ -38,18 +42,20 @@ const SocialIcon = styled.div`
   margin-right:20px;
   cursor:pointer;
   transition: all 0.5s ease;
-
   &:hover{
     transform:scale(1.1);
   }
+  ${mobile({height:"30px",width:"30px"})}
 `
 const Center = styled.div`
   flex:1;
   padding:20px;
   margin-top:30px;
+  ${mobile({padding:"0px",marginBottom:"20px"})}
 `
 const Title = styled.h3`
  margin-bottom:30px;
+ ${mobile({marginBottom:"20px"})}
 `
 const List = styled.ul`
   margin:0;
@@ -74,15 +80,15 @@ const Right = styled.div`
  flex:1;
 `
 const ContactItem = styled.div`
- margin-bottom:15px`;
-
+ margin-bottom:15px;
+`
 const Payment = styled.img``
 
 const Footer = () => {
   return (
     <Container>
        <Left>
-          <Logo>E-Bazaar</Logo>
+          <Logo>Ezaar</Logo>
           <Desc>
             There are many variations of passages of  lorem Ipsum availabe, button
             the majority have suffered alteration in some form, by injected into

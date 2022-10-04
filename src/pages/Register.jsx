@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-// import { } from "@ant-design/icons";
+import {mobile} from "../responsive";
 
 const Container = styled.div`
  width:100vw;
@@ -22,6 +22,7 @@ const Wrapper = styled.div`
    padding:30px;
    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
    border-radius: 4px;
+   ${mobile({width:"70%"})}
 `;
 const Title = styled.h1`
  font-size: 24px;
@@ -62,7 +63,20 @@ const Button = styled.button`
     color:black;
  }
 `
-
+const Text =styled.div`
+ text-align: right;
+ width:100%;
+ margin-top:20px;
+`
+const Span =styled.span`
+  font-weight: 400;
+ `
+const Link = styled.a`
+ font-weight: 600;
+ cursor:pointer;
+ text-decoration:none;
+ color:teal;
+`
 const Register = () => {
 	return (
 		<Container>
@@ -80,6 +94,10 @@ const Register = () => {
 						information in accordance with the <b> PRIVACY POLICY</b>
 					</Agreement>
 					<Button>CREATE</Button>
+					<Text>
+						<Span>Have already an account?</Span>
+						<Link href = "login"> Sign In</Link>
+					</Text>
 				</Form>
 			</Wrapper>
 		</Container>

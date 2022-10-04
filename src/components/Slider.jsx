@@ -1,17 +1,9 @@
 import React, {useState} from "react";
 import { sliderItems } from "../Data";
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
-import {
-	Container,
-	Wrapper,
-	Slide,
-	Arrow,
-	ImageContainer,
-	InfoContainer,
-	Image,
-	Title,
-	Desc,
-	Button,
+import { Container,Wrapper,Slide,Arrow,
+    ImageContainer,InfoContainer,Image,Title,
+	Desc,Button,
 } from "./SliderStyled";
 
 const Slider = () => {
