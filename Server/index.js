@@ -5,6 +5,9 @@ const dotenv = require('dotenv');
 const port =  process.env.PORT || 8800;
 const Authroute = require('./routes/auth');
 const userRoute = require('./routes/user');
+const productRoute = require('./routes/products');
+const cartRoute = require('./routes/cart');
+const orderRoute = require('./routes/order');
 
 dotenv.config();
 app.use(express.json());
@@ -15,11 +18,9 @@ app.get("/", (req, res) => {
 })
 app.use("/api/auth", Authroute);
 app.use("/api/user", userRoute);
-
-
-
-
-
+app.use("/api/products", productRoute);
+app.use("/api/cart" , cartRoute);
+app.use("/api/orders", orderRoute);
 
 
 mongoose.connect(process.env.MONGOURL, {useNewUrlParser: true, useUnifiedTopology: true
