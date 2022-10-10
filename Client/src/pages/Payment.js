@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import styled from "styled-components";
 import StripeCheckout from 'react-stripe-checkout';
 import axios from "axios"
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   display:flex;
@@ -22,8 +23,8 @@ const Wrapper = styled.div`
   box-shadow:0px 0px 7px 2px rgba(0,0,0,0.3);
 `
 const Button = styled.button`
-   width:10rem;
-   height:3rem;
+   min-width:10rem;
+   min-height:3rem;
    border:none;
    color:white;
    background-color:teal;
@@ -48,8 +49,9 @@ const url = "http://localhost:8800/api/checkout/payment"
 
 const Payment = () => {
     const [stripeToken ,setStripeToken] = useState(null);
-
+    const navigate = useNavigate();
     const makePyament = (token) => {
+      // console.log(token);
       setStripeToken(token)
     }
 
@@ -59,31 +61,37 @@ const Payment = () => {
             const res = await axios.post(url, {
                 tokenId:stripeToken.id,
                 amount:2000,
+                currency:"usd"
             })
          console.log("Data", res.data)
+         navigate('/success')
          }catch(err){
             console.log({message:"Server error"});
          }
         };
        stripeToken && makeRequest();
-    }, [stripeToken]);
+    }, [stripeToken, navigate]);
 
     return (
         <Container>
         <Wrapper>
-         <StripeCheckout
-         name="E-Bazaar"
-         image={imageUrl}
-         billingAddress
-         shippingAddress
-         description="Your total is $20"
-         amount={2000}
-         token={makePyament}
-         stripeKey = {KEY}
-
+        { stripeToken ? (
+          <span>Processing... Please wait sometimes....</span>
+        ):(
+          <StripeCheckout
+          name="E-Bazaar"
+          image={imageUrl}
+          billingAddress
+          shippingAddress
+          description="Your total is $20"
+          amount={2000}
+          token={makePyament}
+          stripeKey = {KEY}
          >
           <Button>Pay</Button> 
          </StripeCheckout>
+
+        )}
         </Wrapper>
         </Container>
     )
