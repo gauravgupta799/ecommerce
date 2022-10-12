@@ -13,7 +13,6 @@ const Container = styled.div`
     padding:"0px",
   })}
 `
-
 const Categories = () => {
     return (
         <Container>

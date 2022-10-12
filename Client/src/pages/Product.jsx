@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState, useEffect} from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import Announcement from "../components/Announcement";
@@ -6,9 +6,12 @@ import Footer from "../components/Footer";
 import Newsletter from "../components/Newsletter";
 import { MinusSquareOutlined, PlusSquareOutlined } from "@ant-design/icons";
 import {mobile} from "../responsive";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
+// import { publicRequest } from "../requestMethod";
 
 const purl ="https://asset1.cxnmarksandspencer.com/is/image/mands/SD_03_T16_6466M_E2_X_EC_0?$Intl_PDP_Tab$";
-
+const URL = "http://localhost:8800/api/products/find";
 const Container = styled.div``;
 const Wrapper = styled.div`
 	padding: 50px;
@@ -17,6 +20,7 @@ const Wrapper = styled.div`
 `;
 const ImageContainer = styled.div`
 	flex: 1;
+	border-left:${(props) => props.color ? `1px dotted ${props.color}` : ""};
 `;
 const InfoContainer = styled.div`
 	flex: 1;
@@ -143,48 +147,68 @@ const Button = styled.button`
 `;
 
 const Product = () => {
+	const location = useLocation();
+	const itemId = location.pathname.split('/')[2];
+	const [productItem, setProductItem] = useState({});
+	const [quantity ,setQuantity] = useState(1);
+	const [color ,setColor] = useState("");
+	const [size, setSize] = useState("");
+
+	useEffect(() => {
+		const getProduct = async()=>{
+			try{
+				const res= await axios.get(`${URL}/${itemId}`);
+				setProductItem(res.data);
+			}catch(e){
+				console.log(e);
+			}
+		}
+        getProduct();
+	},[itemId])
+
+	const handleQuantity = (type)=>{
+		if(type ==="decrease"){
+			quantity > 1 && setQuantity(quantity - 1);
+		}else{
+		   setQuantity(quantity + 1);
+		}
+	}
+
+	const handleAddCart = ()=>{
+
+	}
+
+    // console.log("ProductItem", productItem.color);
+
 	return (
 		<Container>
 			<Navbar />
 			<Announcement />
 			<Wrapper>
-				<ImageContainer>
-					<Image src={purl} alt='product' />
+				<ImageContainer color = {color}>
+					<Image src={productItem?.img} alt='product' />
 				</ImageContainer>
-				<InfoContainer>
-					<Title>Denim Jacket</Title>
-					<Desc>
-						Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean
-						commodo ligula eget dolor. Aenean massa. Cum sociis natoque
-						penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-						Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.
-						Nulla consequat massa quis enim. Donec pede justo, fringilla vel,
-						aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut,
-						imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede
-						mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum
-						semper nisi. Aenean vulputate eleifend tellus.
-					</Desc>
-					<Price>$20.00</Price>
+				<InfoContainer >
+					<Title>{productItem?.title}</Title>
+					<Desc>{productItem?.desc}</Desc>
+					<Price>${productItem?.price}</Price>
 					<FilterContainer>
 						<Filter>
 							<FilterText>Color</FilterText>
-							<FilterColor color='brown' />
-							<FilterColor color='black' />
-							<FilterColor color='green' />
-							<FilterColor color='blue' />
+							 {productItem?.color?.map((c)=>{
+								return(
+									<FilterColor color={c} key ={c} onClick = {()=> setColor(c)}/>
+								)
+							 })}
 						</Filter>
 						<Filter>
 							<FilterText>Size</FilterText>
-							<Select>
-								<Option disabled selected>
-									size
-								</Option>
-								<Option>XS</Option>
-								<Option>S</Option>
-								<Option>M</Option>
-								<Option>L</Option>
-								<Option>XL</Option>
-								<Option>XXL</Option>
+							<Select onChange = {(e)=> setSize(e.target.value)}>
+								<Option disabled >size</Option>
+								{productItem?.size?.map(s=>(
+									<Option key ={s}>{s}</Option>
+								))}
+							
 							</Select>
 						</Filter>
 					</FilterContainer>
@@ -194,15 +218,17 @@ const Product = () => {
 								style={{
 									fontSize: "30px",
 								}}
+								onClick={()=> handleQuantity("decrease")}
 							/>
-							<Count>10</Count>
+							<Count>{quantity}</Count>
 							<PlusSquareOutlined 
                                 style={{
 									fontSize: "30px",
 								}}
+								onClick={()=> handleQuantity("increase")}
                             />
 						</AmountContainer>
-						<Button>ADD TO CART</Button>
+						<Button onClick = {handleAddCart}>ADD TO CART</Button>
 					</AddContainer>
 				</InfoContainer>
 			</Wrapper>

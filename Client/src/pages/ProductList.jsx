@@ -58,10 +58,10 @@ const Option = styled.option`
   padding:20px 0px;
 `
 
-const Categories = () => {
+const ProductList = () => {
   const location = useLocation();
   const cate = location.pathname.split('/')[2];
-  console.log(cate);
+  // console.log(cate);
 
   const [filter, setFilter] = useState({});
   const [sort, setSort] = useState("newest");
@@ -75,18 +75,18 @@ const Categories = () => {
         <Container>
           <Navbar/>
           <Announcement/>
-           <Title>Dresses</Title>
+           <Title>{cate}</Title>
           <FilterContainer>
             <Filter>
                 <FilterText>Filter Products:</FilterText>
                 <Select name = "color" onChange={handleFilter}>
                     <Option disabled>Color</Option>
-                    <Option>black</Option>
-                    <Option>white</Option>
-                    <Option>orange</Option>
-                    <Option>blue</Option>
-                    <Option>olive</Option>
-                    <Option>green</Option>
+                    <Option>Black</Option>
+                    <Option>White</Option>
+                    <Option>Orange</Option>
+                    <Option>Blue</Option>
+                    <Option>Olive</Option>
+                    <Option>Green</Option>
                 </Select>
                 <Select name = "size" onChange={handleFilter}>
                     <Option disabled >Size</Option>
@@ -115,4 +115,4 @@ const Categories = () => {
     )
 }
 
-export default Categories;
+export default ProductList;

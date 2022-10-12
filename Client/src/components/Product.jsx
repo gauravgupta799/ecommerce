@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from "styled-components";
 import { SearchOutlined, ShoppingCartOutlined,HeartOutlined} from "@ant-design/icons";
+import {Link } from "react-router-dom";
 
 const Info = styled.div`
  opacity:0;
@@ -67,6 +68,7 @@ const Icon = styled.div`
 `
 const Product = ({item}) => {
     return (
+      <Link to = {`/product/${item._id}`}>
         <Container>
             <Circle/>
             <Image src = {item.img}/>
@@ -76,6 +78,7 @@ const Product = ({item}) => {
                 <Icon><HeartOutlined/></Icon>
             </Info>
         </Container>
+      </Link>
     )
 }
 

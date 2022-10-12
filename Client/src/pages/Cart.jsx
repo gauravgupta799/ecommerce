@@ -178,7 +178,6 @@ const SummaryText = styled.span`
 	letter-spacing: 1px;
 `;
 const SummaryItemPrice = styled.span``;
-
 const CheckoutButton = styled.button`
 	width: 100%;
 	padding: 10px;
@@ -203,7 +202,6 @@ const Cart = () => {
 		<Container>
 			<Navbar />
 			<Announcement />
-
 			<Wrapper>
 				<Title>YOUR BAG</Title>
 				<Top>

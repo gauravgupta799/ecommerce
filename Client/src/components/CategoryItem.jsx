@@ -46,7 +46,7 @@ const Button = styled.button`
   }
 `
 const CategoryItem = ({item}) => {
-    console.log("Item", item);
+    // console.log("Item", item);
   const {img,title,cate} = item;
   return (
     <Container>
