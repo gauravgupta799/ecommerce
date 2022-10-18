@@ -1,13 +1,16 @@
 import React,{useState, useEffect} from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
-import Announcement from "../components/Announcement";
+// import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Newsletter from "../components/Newsletter";
 import { MinusSquareOutlined, PlusSquareOutlined } from "@ant-design/icons";
 import {mobile} from "../responsive";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import {addProduct} from "../Redux/cardRedux";
+import {useDispatch} from "react-redux";
+
 // import { publicRequest } from "../requestMethod";
 
 const purl ="https://asset1.cxnmarksandspencer.com/is/image/mands/SD_03_T16_6466M_E2_X_EC_0?$Intl_PDP_Tab$";
@@ -147,12 +150,15 @@ const Button = styled.button`
 `;
 
 const Product = () => {
+	const dispatch = useDispatch();
 	const location = useLocation();
 	const itemId = location.pathname.split('/')[2];
 	const [productItem, setProductItem] = useState({});
 	const [quantity ,setQuantity] = useState(1);
 	const [color ,setColor] = useState("");
 	const [size, setSize] = useState("");
+	// console.log(size,color,quantity)
+	
 
 	useEffect(() => {
 		const getProduct = async()=>{
@@ -175,7 +181,10 @@ const Product = () => {
 	}
 
 	const handleAddCart = ()=>{
-
+	
+       dispatch(addProduct({
+		...productItem, quantity, color, size 
+	   }))
 	}
 
     // console.log("ProductItem", productItem.color);
@@ -183,7 +192,7 @@ const Product = () => {
 	return (
 		<Container>
 			<Navbar />
-			<Announcement />
+			{/* <Announcement /> */}
 			<Wrapper>
 				<ImageContainer color = {color}>
 					<Image src={productItem?.img} alt='product' />

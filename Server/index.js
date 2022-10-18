@@ -11,7 +11,6 @@ const cartRoute = require('./routes/cart');
 const orderRoute = require('./routes/order');
 const stripeRoute = require('./routes/stripe');
 
-
 dotenv.config();
 app.use(express.json());
 app.use(cors());

@@ -1,6 +1,9 @@
-import React from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 import {mobile} from "../responsive";
+import {useDispatch} from "react-redux";
+import {signUp} from "../Redux/apiCalls";
+import {useNavigate} from "react-router-dom";
 
 const Container = styled.div`
  width:100vw;
@@ -17,7 +20,7 @@ const Container = styled.div`
  justify-content: center;
 `;
 const Wrapper = styled.div`
-   width:50%;
+   width:40%;
    background-color: white;
    padding:30px;
    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
@@ -31,6 +34,7 @@ const Title = styled.h1`
 `;
 const Form = styled.form`
  display: flex;
+ flex-direction: column;
  flex-wrap: wrap;
 `;
 const Input = styled.input`
@@ -78,22 +82,49 @@ const Link = styled.a`
  color:teal;
 `
 const Register = () => {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+	const [userData, setUserData] = useState({
+        username:"",
+	    email:"", 
+		password:"",
+	})
+
+	const handleChange = (e) => {
+     const Name = e.target.name;
+	 const Value = e.target.value;
+	 setUserData({...userData, [Name]:Value});
+	//  console.log(Name, Value);
+	}
+
+	const handleSubmit = (e) =>{
+		e.preventDefault();
+		const {username, email, password,} = userData;
+		if(username === "" | email === "" || password === ""){
+			alert("All fields are required")
+		}else{
+			signUp(dispatch, userData);
+			navigate('/login');
+		}
+	}
+   console.log("Userdata", userData);
+
 	return (
 		<Container>
 			<Wrapper>
 				<Title>CREAT AN ACCOUNT</Title>
 				<Form>
-					<Input type='text' placeholder='Firstname' />
-					<Input type='text' placeholder='Lastname' />
-					<Input type='text' placeholder='username' />
-					<Input type='email' placeholder='Email' />
-					<Input type='password' placeholder='Password' />
-					<Input type='confirm-password' placeholder='Confirm Password' />
+					{/* <Input type='text'  name="fistname" placeholder='Firstname' onChange={handleChange} required/> */}
+					{/* <Input type='text'  name="lastname" placeholder='Lastname' onChange={handleChange}  required/> */}
+					<Input type='text'  name="username" placeholder='username' onChange={handleChange}  required/>
+					<Input type='email' name="email"  placeholder='Email' onChange={handleChange}  required/>
+					<Input type='password' name="password" placeholder='Password' onChange={handleChange}  required/>
+					{/* <Input type='confirm-password' name="confirmPassword" placeholder='Confirm Password' onChange={handleChange}  required/> */}
 					<Agreement>
 						By creating an account, I consent to the processing of my personal
 						information in accordance with the <b> PRIVACY POLICY</b>
 					</Agreement>
-					<Button>CREATE</Button>
+					<Button onClick = {handleSubmit}>CREATE</Button>
 					<Text>
 						<Span>Have already an account?</Span>
 						<Link href = "login"> Sign In</Link>

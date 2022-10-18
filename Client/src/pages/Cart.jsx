@@ -1,14 +1,19 @@
+import React, {useState, useEffect} from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
-import Announcement from "../components/Announcement";
+// import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import { MinusSquareOutlined, PlusSquareOutlined } from "@ant-design/icons";
 import { mobile } from "../responsive";
+import {useSelector } from "react-redux";
+import { useNavigate} from "react-router-dom";
+import StripeCheckout from 'react-stripe-checkout';
+import axios from "axios";
 
-const p1 =
-	"https://images.unsplash.com/photo-1587563871167-1ee9c731aefb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTd8fHNob2VzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=600&q=60";
-const p2 =
-	"https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=464&q=80";
+// const p1 =
+// 	"https://images.unsplash.com/photo-1587563871167-1ee9c731aefb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTd8fHNob2VzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=600&q=60";
+// const p2 =
+// 	"https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=464&q=80";
 
 const Container = styled.div``;
 const Wrapper = styled.div`
@@ -197,11 +202,41 @@ const CheckoutButton = styled.button`
 	}
 `;
 
+const KEY = "pk_test_51Lr4YwSG47IJRemkJjcSAbETw3A5gJVzFVsaPjXOX9zpldcjUz9FPeFjjGPPDbdiLU8W5KdN9jJWWblYyfYFwS0k00Lt3Dk8oD"
+const imageUrl = "https://www.samma3a.com/pub/media/Magebay/Marketplace/images/l/o/logo_ebazaar.jpg";
+const url = "http://localhost:8800/api/checkout/payment"
+
 const Cart = () => {
+	const [stripeToken ,setStripeToken] = useState(null);
+    const navigate = useNavigate();
+
+	const cart = useSelector(state => state.cart);
+
+    const makePyament = (token) => {
+      setStripeToken(token)
+    }
+    
+	useEffect(() => {
+        const makeRequest = async () => {
+         try{
+            const res = await axios.post(url, {
+                tokenId:stripeToken.id,
+                amount:cart.total * 100,
+                currency:"usd"
+            })
+			console.log("Response", res.data)
+			navigate('/paysuccess')
+         }catch(err){
+            console.log({message:"Server error"});
+         }
+        };
+       stripeToken && cart.total >= 1 && makeRequest();
+    }, [stripeToken,cart.total, navigate]);
+
 	return (
 		<Container>
 			<Navbar />
-			<Announcement />
+			{/* <Announcement /> */}
 			<Wrapper>
 				<Title>YOUR BAG</Title>
 				<Top>
@@ -214,79 +249,52 @@ const Cart = () => {
 				</Top>
 				<Bottom>
 					<InfoContainer>
-						<Product>
-							<ProductDetail>
-								<Image src={p1} alt='' />
-								<Details>
-									<ProductName>
-										<b>Product:</b> ADDIDAS BLACK SHOES{" "}
-									</ProductName>
-									<ProductId>
-										<b>ID:</b> 74352934234
-									</ProductId>
-									<ProductColor color='black' />
-									<ProductSize>
-										<b>Size:</b> 20
-									</ProductSize>
-								</Details>
-							</ProductDetail>
-							<PriceDetail>
-								<AmountContainer>
-									<MinusSquareOutlined
-										style={{
-											fontSize: "30px",
-										}}
-									/>
-									<Count>10</Count>
-									<PlusSquareOutlined
-										style={{
-											fontSize: "30px",
-										}}
-									/>
-								</AmountContainer>
-								<Price>$ 50</Price>
-							</PriceDetail>
-						</Product>
-						<HR />
-						<Product>
-							<ProductDetail>
-								<Image src={p2} alt='' />
-								<Details>
-									<ProductName>
-										<b>Product:</b> ADDIDAS BLACK SHOES{" "}
-									</ProductName>
-									<ProductId>
-										<b>ID:</b> 74352934234
-									</ProductId>
-									<ProductColor color='gray' />
-									<ProductSize>
-										<b>Size:</b> M
-									</ProductSize>
-								</Details>
-							</ProductDetail>
-							<PriceDetail>
-								<AmountContainer>
-									<MinusSquareOutlined
-										style={{
-											fontSize: "30px",
-										}}
-									/>
-									<Count>10</Count>
-									<PlusSquareOutlined
-										style={{
-											fontSize: "30px",
-										}}
-									/>
-								</AmountContainer>
-								<Price>$ 50</Price>
-							</PriceDetail>
-						</Product>
+						{cart?.products?.map((product)=>
+						(
+							<>
+								<Product>
+								<ProductDetail>
+									<Image src={product.img} alt='' />
+									<Details>
+										<ProductName>
+											<b>Product:</b> {product.title}
+										</ProductName>
+										<ProductId>
+											<b>ID:</b> {product._id}
+										</ProductId>
+										<ProductColor color={product.color} />
+										<ProductSize>
+											<b>Size:</b> {product.size}
+										</ProductSize>
+									</Details>
+								</ProductDetail>
+								<PriceDetail>
+									<AmountContainer>
+										<MinusSquareOutlined
+											style={{
+												fontSize: "30px",
+											}}
+										/>
+										<Count>{product.quantity}</Count>
+										<PlusSquareOutlined
+											style={{
+												fontSize: "30px",
+											}}
+										/>
+									</AmountContainer>
+									<Price>$ {product.price * product.quantity}</Price>
+								</PriceDetail>
+							</Product>
+							<HR />
+								</>
+							)
+						)}
 					</InfoContainer>
 					<SummaryContainer>
 						<SummaryTitle>Order Summary</SummaryTitle>
 						<SummaryItem>
 							<SummaryText>Subtotal</SummaryText>
-							<SummaryItemPrice>$ 80.00</SummaryItemPrice>
+							<SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
 						</SummaryItem>
 						<SummaryItem>
 							<SummaryText>Estimated Shopping</SummaryText>
@@ -298,9 +306,26 @@ const Cart = () => {
 						</SummaryItem>
 						<SummaryItem type='total'>
 							<SummaryText>Total</SummaryText>
-							<SummaryItemPrice>$ 80.00</SummaryItemPrice>
+							<SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
 						</SummaryItem>
-						<CheckoutButton>Checkout Now</CheckoutButton>
+						{/* { stripeToken ? (
+						<span>Processing... Please wait sometimes....</span>
+						):( */}
+                         <StripeCheckout
+						   name="E-Bazaar"
+							image={imageUrl}
+							billingAddress
+							shippingAddress
+							description={`Your total is $${cart.total}`}
+							amount={cart.total*100}
+							token={makePyament}
+							stripeKey = {KEY}
+						 >
+							<CheckoutButton>
+							  Checkout Now
+							</CheckoutButton>
+						 </StripeCheckout> 
+						 {/* )} */}
 					</SummaryContainer>
 				</Bottom>
 			</Wrapper>

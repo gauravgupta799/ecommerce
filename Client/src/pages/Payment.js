@@ -51,7 +51,6 @@ const Payment = () => {
     const [stripeToken ,setStripeToken] = useState(null);
     const navigate = useNavigate();
     const makePyament = (token) => {
-      // console.log(token);
       setStripeToken(token)
     }
 

@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { SearchOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import {mobile} from "../responsive";
+import {useSelector} from "react-redux";
+import {NavLink} from "react-router-dom";
 
 
 const Container = styled.div`
@@ -73,7 +75,27 @@ const MenuItem = styled.div`
 		marginLeft:"7px"
 		})}
 `;
+const Span = styled.span`
+  height:23px;
+  width:23px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position: absolute;
+  top:0;
+  margin-top: 2px;
+  background-color:red;
+  border-radius: 50%;
+`
+const H4 = styled.h4`
+ font-size:18px;
+ font-weight:600;
+ color:white;
+`
 const Navbar = () => {
+	const quantity = useSelector(state=>state.cart.quantity);
+	const isLoggedIn = localStorage.getItem('accessToken');
+	// console.log(quantity);
 	return (
 		<Container>
 			<Wrapper>
@@ -88,11 +110,31 @@ const Navbar = () => {
 					<Logo>Ezaar</Logo>
 				</Center>
 				<Right>
-					<MenuItem>REGISTER</MenuItem>
-					<MenuItem>SIGN IN</MenuItem>
-					<MenuItem>
-						<ShoppingCartOutlined />
-					</MenuItem>
+				{
+					isLoggedIn ? 
+					<>
+					<NavLink to ="/register" style={{textDecoration:"none"}}>
+				    <MenuItem>REGISTER</MenuItem>
+					</NavLink>
+					<NavLink to ="/login" style={{textDecoration:"none"}}>
+						<MenuItem>SIGN IN</MenuItem>
+					</NavLink>
+					</>
+					:
+					<NavLink to ="/logout" style={{textDecoration:"none"}}>
+						<MenuItem>Logout</MenuItem>
+					</NavLink>
+				}
+				
+					<NavLink to ="/cart" style={({ isActive }) => ({ 
+                            color: isActive ? 'teal' : 'Black' })}>
+						<MenuItem>
+							<Span>
+								<H4>{quantity}</H4>
+							</Span>
+							<ShoppingCartOutlined style={{fontSize:"28px"}}/>
+						</MenuItem>
+					</NavLink>
 				</Right>
 			</Wrapper>
 		</Container>

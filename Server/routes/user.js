@@ -3,7 +3,7 @@ const User = require('../models/User');
 const {verifyToken,  VerifyTokenAndAdmin, VerifyTokenAndAuthorization} = require('./verifyToken');
 const CryptoJS = require("crypto-js");
 
-
+// Update User
 router.put("/:id", VerifyTokenAndAuthorization, async (req, res) => {
     if(req.body.password){
         req.body.password = CryptoJS.AES.encrypt(
@@ -26,7 +26,6 @@ router.put("/:id", VerifyTokenAndAuthorization, async (req, res) => {
 
 });
 
-
 // Delete User
 router.delete("/:id",VerifyTokenAndAuthorization, async ( req, res)=>{
    try{
@@ -36,7 +35,6 @@ router.delete("/:id",VerifyTokenAndAuthorization, async ( req, res)=>{
     res.status(500).json(e);
    }
 })
-
 
 // Get User
 router.get("/find/:id", VerifyTokenAndAdmin, async ( req, res)=>{

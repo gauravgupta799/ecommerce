@@ -1,6 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from "styled-components";
 import {mobile} from "../responsive";
+import { useDispatch, useSelector} from "react-redux";
+import {login } from "../Redux/apiCalls";
+import {useNavigate} from "react-router-dom";
 
 const Container = styled.div`
  width:100vw;
@@ -59,6 +62,10 @@ const Button = styled.button`
     background-color:white;
     color:black;
  }
+ &:disabled{
+  color:green;
+  cursor:not-allowed;
+ }
 `
 const BottomContainer = styled.div`
  display:flex;
@@ -85,15 +92,47 @@ const Link = styled.a`
     color: lightgreen;
   }
 `
+const Error = styled.span`
+color:red;
+text-align: center;
+margin-top:10px;
+letter-spacing: 1px;
+
+`
 const Login = () => {
+  const [user, setUser] = useState({
+    email:"",password:"",
+  });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const {isFetching, isError} = useSelector(state => state.user);
+
+  const handleChange = (event) => {
+    const Name = event.target.name;
+    const Value = event.target.value;
+    // console.log(Name, Value);
+    setUser({...user , [Name]:Value})
+  }
+
+   const handleSumbit = (e) =>{
+     e.preventDefault();
+     const {email, password} = user;
+     if(email !== "" || password !== ""){
+      login(dispatch, user);
+      navigate('/');
+     }else{
+      alert("All fields are required");
+     }
+   }
     return (
         <Container>
         <Wrapper>
 				<Title>Sign In</Title>
 				<Form>
-					<Input type='email' placeholder='Email' />
-					<Input type='password' placeholder='Password' />
-					<Button>LOGIN</Button>
+					<Input type='email' name = "email" placeholder='Email' onChange = {handleChange}  required/>
+					<Input type='password' name = "password" placeholder='Password' onChange = {handleChange}  required/>
+					<Button onClick = {handleSumbit} disabled = {isFetching}>LOGIN</Button>
+            { isError && <Error>Something went wrong...</Error> }
           <BottomContainer>
             <Span>New user? <Link>Sign Up</Link></Span>
             <Span>Forgot password? <Link>Click here.</Link></Span>
